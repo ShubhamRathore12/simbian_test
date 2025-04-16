@@ -1,24 +1,32 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import WithoutSimbian from "./without-simbian"
-import WithSimbian from "./with-simbian"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import WithoutSimbian from "./without-simbian";
+import WithSimbian from "./with-simbian";
 
 export default function SecurityDashboard() {
-  const [activeSection, setActiveSection] = useState<"without" | "with">("without")
-  const [autoSwitch, setAutoSwitch] = useState(true)
+  const [activeSection, setActiveSection] = useState<"without" | "with">(
+    "without"
+  );
+  const [autoSwitch, setAutoSwitch] = useState(true);
 
   useEffect(() => {
-    if (!autoSwitch) return
+    if (!autoSwitch) return;
 
     const interval = setInterval(() => {
-      setActiveSection((prev) => (prev === "without" ? "with" : "without"))
-    }, 10000)
+      setActiveSection((prev) => (prev === "without" ? "with" : "without"));
+    }, 10000);
 
-    return () => clearInterval(interval)
-  }, [autoSwitch])
+    return () => clearInterval(interval);
+  }, [autoSwitch]);
+
+  const buttonStyle = (active: boolean) =>
+    `text-md px-6 py-2 rounded border transition font-medium ${
+      active
+        ? "bg-black text-white border-black"
+        : "bg-white text-black border-gray-300 hover:bg-gray-100"
+    }`;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -26,37 +34,38 @@ export default function SecurityDashboard() {
         <h1 className="mb-2 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
           Security Operations Dashboard
         </h1>
-        <p className="text-lg text-gray-600">Experience the difference in security operations with Simbian</p>
+        <p className="text-lg text-gray-600">
+          Experience the difference in security operations with Simbian
+        </p>
       </header>
 
       <div className="mb-8 flex flex-wrap justify-center gap-4">
-        <Button
-          variant={activeSection === "without" ? "default" : "outline"}
+        <button
           onClick={() => {
-            setActiveSection("without")
-            setAutoSwitch(false)
+            setActiveSection("without");
+            setAutoSwitch(false);
           }}
-          className="text-md px-6 py-2"
+          className={buttonStyle(activeSection === "without")}
         >
           Without Simbian
-        </Button>
-        <Button
-          variant={activeSection === "with" ? "default" : "outline"}
+        </button>
+
+        <button
           onClick={() => {
-            setActiveSection("with")
-            setAutoSwitch(false)
+            setActiveSection("with");
+            setAutoSwitch(false);
           }}
-          className="text-md px-6 py-2"
+          className={buttonStyle(activeSection === "with")}
         >
           With Simbian
-        </Button>
-        <Button
-          variant={autoSwitch ? "default" : "outline"}
+        </button>
+
+        <button
           onClick={() => setAutoSwitch(!autoSwitch)}
-          className="text-md px-6 py-2"
+          className={buttonStyle(autoSwitch)}
         >
           {autoSwitch ? "Auto-switching: On" : "Auto-switching: Off"}
-        </Button>
+        </button>
       </div>
 
       <motion.div
@@ -69,5 +78,5 @@ export default function SecurityDashboard() {
         {activeSection === "without" ? <WithoutSimbian /> : <WithSimbian />}
       </motion.div>
     </div>
-  )
+  );
 }

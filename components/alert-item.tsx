@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 interface AlertItemProps {
   alert: {
-    id: string
-    text: string
-    time: string
-  }
-  color: "red" | "amber" | "orange" | "green"
+    id: string;
+    text: string;
+    time: string;
+  };
+  color: "red" | "amber" | "orange" | "green";
 }
 
 export default function AlertItem({ alert, color }: AlertItemProps) {
@@ -17,7 +17,7 @@ export default function AlertItem({ alert, color }: AlertItemProps) {
     amber: "border-amber-200 bg-amber-50",
     orange: "border-orange-200 bg-orange-50",
     green: "border-green-200 bg-green-50",
-  }
+  };
 
   return (
     <motion.div
@@ -31,5 +31,5 @@ export default function AlertItem({ alert, color }: AlertItemProps) {
       <span className="font-medium">{alert.text}</span>
       <span className="text-xs text-gray-500">{alert.time}</span>
     </motion.div>
-  )
+  );
 }

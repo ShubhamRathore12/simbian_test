@@ -134,7 +134,7 @@ function AlertCard({ title, count, icon, alerts, description, color }: AlertCard
 
   return (
     <motion.div
-      className="h-[450px]"
+      className="h-[350px]"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
@@ -146,19 +146,21 @@ function AlertCard({ title, count, icon, alerts, description, color }: AlertCard
             <CardTitle className="text-xl font-bold">{title}</CardTitle>
             {icon}
           </CardHeader>
-          <CardContent>
-            <motion.div
-              className="mb-2 text-3xl font-bold"
-              key={count}
-              initial={{ scale: 1.2 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            >
-              {count}
-            </motion.div>
-            <p className="mb-4 text-sm text-gray-500">{description}</p>
+          <CardContent className="flex flex-col justify-between h-[calc(100%-56px)]">
+            <div>
+              <motion.div
+                className="mb-2 text-3xl font-bold"
+                key={count}
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              >
+                {count}
+              </motion.div>
+              <p className="mb-4 text-sm text-gray-500">{description}</p>
+            </div>
 
-            <div className="space-y-2 overflow-y-auto max-h-[200px] pr-1">
+            <div className="space-y-2 overflow-y-auto max-h-[140px] pr-1 scrollbar-thin">
               <AnimatePresence>
                 {alerts.map((alert) => (
                   <AlertItem key={alert.id} alert={alert} color={color} />

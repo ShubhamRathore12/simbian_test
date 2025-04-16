@@ -146,29 +146,30 @@ function AlertCard({ title, count, icon, alerts, description, color }: AlertCard
             <CardTitle className="text-xl font-bold">{title}</CardTitle>
             {icon}
           </CardHeader>
+<CardContent className="flex flex-col justify-between flex-grow">
+  <div>
+    <motion.div
+      className="mb-2 text-3xl font-bold"
+      key={count}
+      initial={{ scale: 1.2 }}
+      animate={{ scale: 1 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+    >
+      {count}
+    </motion.div>
+    <p className="mb-4 text-sm text-gray-500">{description}</p>
+  </div>
 
-          <CardContent className="flex flex-col justify-between flex-grow">
-            <div>
-              <motion.div
-                className="mb-2 text-3xl font-bold"
-                key={count}
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              >
-                {count}
-              </motion.div>
-              <p className="mb-4 text-sm text-gray-500">{description}</p>
-            </div>
 
-            <div className="space-y-2 overflow-y-auto max-h-[40vh] pr-1 scrollbar-thin">
-              <AnimatePresence>
-                {alerts.map((alert) => (
-                  <AlertItem key={alert.id} alert={alert} color={color} />
-                ))}
-              </AnimatePresence>
-            </div>
-          </CardContent>
+  <div className="space-y-2 overflow-y-auto overflow-x-hidden max-h-[40vh] pr-1 scrollbar-thin">
+    <AnimatePresence>
+      {alerts.map((alert) => (
+        <AlertItem key={alert.id} alert={alert} color={color} />
+      ))}
+    </AnimatePresence>
+  </div>
+</CardContent>
+
         </Card>
       </motion.div>
     </motion.div>

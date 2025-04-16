@@ -1,25 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { CheckCircle, Shield, AlertCircle, X, AlertTriangle } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { generateRandomAlert } from "@/lib/alert-utils"
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  CheckCircle,
+  Shield,
+  AlertCircle,
+  X,
+  AlertTriangle,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { generateRandomAlert } from "@/lib/alert-utils";
 
 export default function WithSimbian() {
-  const [resolvedAlerts, setResolvedAlerts] = useState<Array<{ id: string; text: string; time: string }>>([])
+  const [resolvedAlerts, setResolvedAlerts] = useState<
+    Array<{ id: string; text: string; time: string }>
+  >([]);
 
   useEffect(() => {
     // Add new resolved alerts periodically
     const interval = setInterval(() => {
-      const newAlert = generateRandomAlert()
-      setResolvedAlerts((prev) => [newAlert, ...prev.slice(0, 4)])
-    }, 5000)
+      const newAlert = generateRandomAlert();
+      setResolvedAlerts((prev) => [newAlert, ...prev.slice(0, 4)]);
+    }, 5000);
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   const steps = [
     {
@@ -47,49 +55,45 @@ export default function WithSimbian() {
       description: "No analyst fatigue",
       icon: <Shield className="h-8 w-8 text-green-500" />,
     },
-  ]
+  ];
 
   return (
     <div className="space-y-8">
-      <h2 className="text-center text-2xl font-bold text-green-600 md:text-3xl">With Simbian</h2>
+      <h2 className="text-center text-2xl font-bold text-green-600 md:text-3xl">
+        With Simbian
+      </h2>
 
       <div className="overflow-x-auto py-4">
-        <div className="flex min-w-max items-center justify-center space-x-4 px-4">
+        <div className="flex min-w-max items-center justify-center space-x-0 px-4">
           {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative"
-            >
-              <Card className="w-48 border-2 border-green-200 bg-green-50">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-bold">{step.title}</CardTitle>
-                  {step.icon}
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xs text-gray-500">{step.description}</p>
-                </CardContent>
-              </Card>
+            <div key={index} className="flex items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="w-48 border-2 border-green-200 bg-green-50">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-bold">
+                      {step.title}
+                    </CardTitle>
+                    {step.icon}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-xs text-gray-500">{step.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
               {index < steps.length - 1 && (
-                <div className="absolute right-[-24px] top-1/2 z-10 -translate-y-1/2">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: 20 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 + 0.3 }}
-                    className="h-0.5 bg-green-500"
-                  />
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 + 0.6 }}
-                    className="absolute right-[-4px] top-[-4px] h-3 w-3 rotate-45 border-b border-r border-green-500"
-                  />
-                </div>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: 32 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 + 0.3 }}
+                  className="mx-2 h-0.5 bg-green-500"
+                />
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -117,7 +121,9 @@ export default function WithSimbian() {
       <div className="mt-8">
         <Card className="border-2 border-green-200 bg-green-50">
           <CardHeader>
-            <CardTitle className="text-center text-xl font-bold text-green-700">Resolved Alerts</CardTitle>
+            <CardTitle className="text-center text-xl font-bold text-green-700">
+              Resolved Alerts
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -133,7 +139,9 @@ export default function WithSimbian() {
                     <CheckCircle className="h-5 w-5 text-green-500" />
                     <span>{alert.text}</span>
                   </div>
-                  <span className="text-xs text-gray-500">Resolved {alert.time}</span>
+                  <span className="text-xs text-gray-500">
+                    Resolved {alert.time}
+                  </span>
                 </motion.div>
               ))}
             </div>
@@ -143,22 +151,27 @@ export default function WithSimbian() {
 
       <div className="mt-8 rounded-lg bg-green-50 p-4 text-center">
         <p className="text-lg font-medium text-green-800">
-          90% of alerts resolved automatically, 24/7 coverage, and comprehensive analysis of every alert
+          90% of alerts resolved automatically, 24/7 coverage, and comprehensive
+          analysis of every alert
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 interface ZeroAlertCardProps {
-  title: string
-  icon: React.ReactNode
-  description: string
+  title: string;
+  icon: React.ReactNode;
+  description: string;
 }
 
 function ZeroAlertCard({ title, icon, description }: ZeroAlertCardProps) {
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Card className="border-2 border-green-200 bg-green-50">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xl font-bold">{title}</CardTitle>
@@ -199,5 +212,5 @@ function ZeroAlertCard({ title, icon, description }: ZeroAlertCardProps) {
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 }

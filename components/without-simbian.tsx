@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { AlertCircle, AlertTriangle, X } from "lucide-react"
@@ -19,7 +18,6 @@ export default function WithoutSimbian() {
   const [activeAlertsList, setActiveAlertsList] = useState<Array<{ id: string; text: string; time: string }>>([])
 
   useEffect(() => {
-    // Initialize with some alerts
     setIgnoredAlertsList([
       { id: "1", text: "Phishing Email", time: "2 min ago" },
       { id: "2", text: "Suspicious Login", time: "5 min ago" },
@@ -36,7 +34,6 @@ export default function WithoutSimbian() {
       { id: "2", text: "Privilege Escalation", time: "3 min ago" },
     ])
 
-    // Add new alerts periodically
     const ignoredInterval = setInterval(() => {
       const newAlert = generateRandomAlert()
       setIgnoredAlerts((prev) => prev + 1)
@@ -121,34 +118,56 @@ function AlertCard({ title, count, icon, alerts, description, color }: AlertCard
     green: "bg-green-50 border-green-200",
   }
 
-  return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-      <Card className={`border-2 ${colorMap[color]}`}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-bold">{title}</CardTitle>
-          {icon}
-        </CardHeader>
-        <CardContent>
-          <motion.div
-            className="mb-2 text-3xl font-bold"
-            key={count}
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          >
-            {count}
-          </motion.div>
-          <p className="mb-4 text-sm text-gray-500">{description}</p>
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 100, damping: 10 } },
+    shake: { x: [-4, 4, -4, 4, 0], transition: { duration: 0.4 } },
+  }
 
-          <div className="space-y-2">
-            <AnimatePresence>
-              {alerts.map((alert) => (
-                <AlertItem key={alert.id} alert={alert} color={color} />
-              ))}
-            </AnimatePresence>
-          </div>
-        </CardContent>
-      </Card>
+  const glowVariants = {
+    initial: { boxShadow: "0 0 0 rgba(0,0,0,0)" },
+    animate: {
+      boxShadow: "0 0 20px rgba(255, 0, 0, 0.3)",
+      transition: { duration: 1.5, repeat: Infinity, repeatType: "mirror" },
+    },
+  }
+
+  return (
+    <motion.div
+      className="h-[450px]"
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="shake"
+    >
+      <motion.div variants={glowVariants} initial="initial" animate="animate" className="h-full">
+        <Card className={`border-2 h-full ${colorMap[color]}`}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-xl font-bold">{title}</CardTitle>
+            {icon}
+          </CardHeader>
+          <CardContent>
+            <motion.div
+              className="mb-2 text-3xl font-bold"
+              key={count}
+              initial={{ scale: 1.2 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            >
+              {count}
+            </motion.div>
+            <p className="mb-4 text-sm text-gray-500">{description}</p>
+
+            <div className="space-y-2 overflow-y-auto max-h-[200px] pr-1">
+              <AnimatePresence>
+                {alerts.map((alert) => (
+                  <AlertItem key={alert.id} alert={alert} color={color} />
+                ))}
+              </AnimatePresence>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
     </motion.div>
   )
 }
